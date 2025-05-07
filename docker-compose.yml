@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  reverse-proxy:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+      - "2222:2222"
+    depends_on:
+      - Client
+      - Server
+      - Monitoring
+      - LinuxTooling
+
+  Client:
+    build: ./Client
+    container_name: client
+    restart: unless-stopped
+
+  Server:
+    build: ./Server
+    container_name: server
+    restart: unless-stopped
+
+  Monitoring:
+    build: ./Monitoring
+    container_name: monitoring
+    restart: unless-stopped
+
+  LinuxTooling:
+    build: ./LinuxTooling
+    container_name: devops2025
+    restart: unless-stopped
+    # pour SSH
+    command: ["/usr/sbin/sshd","-D"]
+

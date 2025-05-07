@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  Client:
+    ports:
+      - "5173:5173"   # dev
+  Server:
+    ports:
+      - "8000:8000"
+  Monitoring:
+    ports:
+      - "3000:3000"
+  LinuxTooling:
+    ports:
+      - "2222:2222"
+
