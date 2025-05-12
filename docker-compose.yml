@@ -1,37 +1,82 @@
-version: "3.8"
+version: '3.8'
+
 services:
-  reverse-proxy:
-    image: nginx:stable-alpine
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - "80:80"
-      - "2222:2222"
-    depends_on:
-      - Client
-      - Server
-      - Monitoring
-      - LinuxTooling
 
-  Client:
-    build: ./Client
-    container_name: client
-    restart: unless-stopped
-
-  Server:
-    build: ./Server
-    container_name: server
-    restart: unless-stopped
-
-  Monitoring:
-    build: ./Monitoring
-    container_name: monitoring
-    restart: unless-stopped
-
-  LinuxTooling:
-    build: ./LinuxTooling
+  # Conteneur avec SSH 
+  devops2025:
+    build: ./server  
     container_name: devops2025
-    restart: unless-stopped
-    # pour SSH
-    command: ["/usr/sbin/sshd","-D"]
+    image: devops2025-image
+    ports:
+      - "2222:22" 
+    volumes:
+      - ./server:/app  
+    networks:
+      - fbrain_network
+    command: "/usr/sbin/sshd -D" 
+    environment:
+      - TZ=Europe/Paris
+    stdin_open: true
+    tty: true
+
+  # Conteneur pour l'application React (client)
+  client:
+    build: ./client  
+    container_name: react-app
+    ports:
+      - "5173:5173"  
+      - "4173:4173"  
+    networks:
+      - fbrain_network
+    environment:
+      - TZ=Europe/Paris
+
+  server:
+    build: ./server 
+    container_name: django-server
+    ports:
+      - "8080:8080"  
+    networks:
+      - fbrain_network
+    environment:
+      - TZ=Europe/Paris
+
+  # Conteneur pour Prometheus 
+  prometheus:
+    build: ./monitoring/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090" 
+    networks:
+      - fbrain_network
+    environment:
+      - TZ=Europe/Paris
+
+  # Conteneur pour Grafana (Monitoring)
+  grafana:
+    build: ./monitoring/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - fbrain_network
+    environment:
+      - TZ=Europe/Paris
+
+  # Conteneur pour Nginx 
+  proxy:
+    build: ./proxy  
+    container_name: nginx-proxy
+    ports:
+      - "80:80"  
+      - "443:443"  
+    networks:
+      - fbrain_network
+    environment:
+      - TZ=Europe/Paris
+
+networks:
+  fbrain_network:
+    driver: bridge
+
 
