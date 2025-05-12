@@ -1,57 +1,35 @@
-Objectif du projet
+INFRA & F_BRAIN with DOCKER in DOCKER + docker networks
+Objectifs de la session
+L'objectif principal de cette session était de :
 
-Mettre en place une application complète composée de plusieurs services (frontend, backend, monitoring), chacun dans un conteneur Docker, accessible depuis l’extérieur via un reverse proxy (NGINX). Chaque service doit être testé, bien structuré, et facilement déployable.
+Ouvrir des ports supplémentaires sur le serveur,
+Créer un projet avec plusieurs services Docker (React, Django, Monitoring, Nginx),
+Configurer Docker et Git pour gérer l'avancement du projet.
+Étapes réalisées
+1. Ouverture des ports sur le serveur
+Sur le serveur, seul le port SSH était ouvert au départ. On a dû ouvrir quatre autres ports pour permettre la communication entre les différents services. Ces ports ont été configurés pour client, serveur, monitoring et proxy.
 
-⸻
+2. Création du projet sur le serveur
+Une fois les ports ouverts, on a créé un nouveau dossier de projet sur le serveur. Ce dossier s'appelle F_Brain, et il contient un fichier docker-compose.yml pour orchestrer les différents services Docker.
 
-1. Organisation des services
+3. Structure du projet
+Dans le dossier F_Brain, voici la structure que l'on a mise en place :
 
-L’application est divisée en 3 services principaux :
-	•	Client (frontend)
-	•	Server (backend)
-	•	Monitoring (outil type Grafana ou autre)
+client : Un dossier pour l'application React,
+server : Un dossier pour l'application Django,
+monitoring : Un dossier contenant les Dockerfiles et configurations pour Grafana et Prometheus,
+proxy : Un dossier contenant le fichier de configuration Nginx pour servir de reverse proxy.
+Dans chaque sous-dossier, on a créé un Dockerfile pour chaque service (React, Django, Grafana/Prometheus, Nginx) et configuré les projets respectifs dans ces dossiers.
 
-Chaque service a :
-	•	Un Dockerfile pour définir comment il est construit.
-	•	Des tests unitaires (à automatiser si possible).
-	•	Une configuration pour être intégré dans un docker-compose.yml.
+4. Création des fichiers Docker
+Pour chaque dossier, on a créé un fichier Dockerfile pour chaque service :
 
-⸻
+client : Dockerfile pour une application React,
+server : Dockerfile pour une application Django,
+monitoring : Dockerfile et fichiers de configuration pour Grafana et Prometheus,
+proxy : Dockerfile et fichier de configuration pour Nginx (reverse proxy).
+5. Initialisation du projet Git
+Une fois que le projet était mis en place avec tous les dossiers et fichiers nécessaires, on a initialisé un dépôt Git à la racine du projet F_Brain :
 
-2. Reverse Proxy (NGINX)
-
-Un Reverse Proxy (probablement via NGINX) est mis au centre pour :
-	•	Rediriger le trafic externe vers les bons services internes.
-	•	Rendre l’ensemble de l’application accessible via un seul point d’entrée (par exemple localhost, ou une IP publique).
-
-⸻
-
-3. Exposition des ports
-
-Certains ports doivent être exposés à l’extérieur pour accéder aux services :
-4. Ce qu’il y a à faire concrètement
-
-A. Pour chaque service (client, server, monitoring)
-	•	Créer un Dockerfile pour le conteneuriser.
-	•	Écrire des tests unitaires.
-	•	Ajouter une configuration dans un fichier docker-compose.yml.
-	•	S’assurer que chaque service fonctionne sur le bon port interne.
-
-B. Reverse Proxy avec NGINX
-	•	Créer un conteneur NGINX :
-	•	Avec un Dockerfile
-	•	Un fichier de configuration nginx.conf qui :
-	•	Redirige / vers le client
-	•	Redirige /api vers le serveur
-	•	Redirige /monitoring vers l’outil de monitoring
-	•	Ajouter ce conteneur dans le docker-compose.yml.
-
-C. Réseaux et ports
-	•	Configurer docker-compose pour :
-	•	Relier tous les services dans le même réseau Docker.
-	•	Exposer les ports listés ci-dessus vers l’extérieur.
-
-D. Vérifications finales
-	•	Tester l’accès à chaque service via le reverse proxy.
-	•	S’assurer que les ports fonctionnent.
-	•	Vérifier que tout fonctionne même sans accès direct aux services (grâce au proxy).
+git init
+Ensuite, on a effectué des commits réguliers pour chaque étape de la création : • Un commit pour chaque dossier (client, server, monitoring, proxy), • Un commit pour chaque avancement dans le projet (création des fichiers Dockerfile, ajout des configurations, etc.).

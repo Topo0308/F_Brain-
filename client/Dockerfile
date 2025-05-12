@@ -8,5 +8,6 @@ RUN npm run build     # produit /app/dist
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 5173 4173
+EXPOSE 5173
+EXPOSE 4173
 
