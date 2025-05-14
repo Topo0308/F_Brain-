@@ -8,6 +8,6 @@ RUN npm run build     # produit /app/dist
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 5173
-EXPOSE 4173
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
 

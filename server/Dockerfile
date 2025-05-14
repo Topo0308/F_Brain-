@@ -1,12 +1,18 @@
-FROM python:3.9-slim
+FROM python:3.12
 
-# Ou plus précisément (même patch version, si tu veux 3.9.2)
-FROM python:3.9.2-slim
+WORKDIR /app
 
-WORKDIR /srv/app
 COPY requirements.txt .
+
+# ✅ Met à jour pip ici
+RUN python -m pip install --upgrade pip
+
+# ✅ Puis installe les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
-EXPOSE 8000
-CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
 
