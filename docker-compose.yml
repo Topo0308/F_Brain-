@@ -21,8 +21,7 @@ services:
     build: ./client  
     container_name: react-app
     ports:
-       - "5173:80" 
-       - "4173:80"   
+       - "5174:80"  
     networks:
       - fbrain_network
     environment:
@@ -32,7 +31,7 @@ services:
     build: ./server 
     container_name: django-server
     ports:
-      - "8080:8080"  
+      - "8081:8000"  
     networks:
       - fbrain_network
     environment:
