@@ -1,0 +1,65 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+before_script:
+  - docker info
+
+# ───── TEST ─────
+test-server:
+  stage: test
+  image: python:3.12
+  services:
+    - name: postgres:15
+      alias: db
+  variables:
+    POSTGRES_DB: fbrain_db
+    POSTGRES_USER: fbrain_user
+    POSTGRES_PASSWORD: fbrain_pass
+    DATABASE_URL: postgres://fbrain_user:fbrain_pass@db:5432/fbrain_db
+  script:
+    - pip install -r server/requirements.txt
+    - cd server
+    - python manage.py migrate
+    - python manage.py test
+  only:
+    - dev
+    - /^Feature_.*/
+
+# ───── BUILD DOCKER ─────
+docker-build:
+  stage: build
+  image: docker:24
+  services:
+    - docker:dind
+  script:
+    - docker compose -f docker-compose.yml build
+  only:
+    - dev
+    - /^Feature_.*/
+
+# ───── DEPLOY ─────
+deploy-dev:
+  stage: deploy
+  image: docker:24
+  services:
+    - docker:dind
+  script:
+    - docker compose -f docker-compose.yml up -d
+  only:
+    - dev
+
+deploy-prod:
+  stage: deploy
+  image: docker:24
+  services:
+    - docker:dind
+  script:
+    - docker compose -f docker-compose.yml up -d --build
+  only:
+    - main

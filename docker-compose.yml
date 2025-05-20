@@ -36,6 +36,21 @@ services:
       - fbrain_network
     environment:
       - TZ=Europe/Paris
+    env_file:
+    - ./server/.env
+
+  # Conteneur pour la base de données PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: fbrain_db
+      POSTGRES_USER: fbrain_user
+      POSTGRES_PASSWORD: fbrain_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fbrain_network
 
   # Conteneur pour Prometheus 
   prometheus:
@@ -74,5 +89,9 @@ services:
 networks:
   fbrain_network:
     driver: bridge
+
+volumes:
+  postgres_data:
+
 
 

@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.urls import path, include
+from django_prometheus import exports
+from .views import home
+
 urlpatterns = [
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
-    path('', include('django_prometheus.urls')),
+    path('metrics', exports.ExportToDjangoView, name="prometheus-django-metrics"),
 ]
