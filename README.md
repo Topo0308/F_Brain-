@@ -1,35 +1,80 @@
-INFRA & F_BRAIN with DOCKER in DOCKER + docker networks
-Objectifs de la session
-L'objectif principal de cette session était de :
+🚗 Application de Covoiturage – F_Brain
+🧠 Projet F_Brain – Application Web de Covoiturage
+Cette application est une plateforme web de covoiturage conçue pour permettre aux utilisateurs de proposer ou de réserver des trajets. Elle s’appuie sur une architecture moderne et conteneurisée basée sur Docker, intégrant React, Django, Nginx, Grafana, et Prometheus.
 
-Ouvrir des ports supplémentaires sur le serveur,
-Créer un projet avec plusieurs services Docker (React, Django, Monitoring, Nginx),
-Configurer Docker et Git pour gérer l'avancement du projet.
-Étapes réalisées
-1. Ouverture des ports sur le serveur
-Sur le serveur, seul le port SSH était ouvert au départ. On a dû ouvrir quatre autres ports pour permettre la communication entre les différents services. Ces ports ont été configurés pour client, serveur, monitoring et proxy.
+🧱 Structure du Projet
+bash
+Copier
+Modifier
+F_Brain/
+│
+├── client/          # Frontend React
+├── server/          # Backend Django + DRF
+├── proxy/           # Nginx reverse proxy
+├── monitoring/      # Grafana + Prometheus
+├── docker-compose.yml
+└── README.md
+⚙️ Fonctionnalités principales
+Frontend – React
+Page d'inscription et de connexion
 
-2. Création du projet sur le serveur
-Une fois les ports ouverts, on a créé un nouveau dossier de projet sur le serveur. Ce dossier s'appelle F_Brain, et il contient un fichier docker-compose.yml pour orchestrer les différents services Docker.
+Liste des trajets proposés avec le nombre de places disponibles
 
-3. Structure du projet
-Dans le dossier F_Brain, voici la structure que l'on a mise en place :
+Filtres : lieu de départ, d'arrivée, date, heure
 
-client : Un dossier pour l'application React,
-server : Un dossier pour l'application Django,
-monitoring : Un dossier contenant les Dockerfiles et configurations pour Grafana et Prometheus,
-proxy : Un dossier contenant le fichier de configuration Nginx pour servir de reverse proxy.
-Dans chaque sous-dossier, on a créé un Dockerfile pour chaque service (React, Django, Grafana/Prometheus, Nginx) et configuré les projets respectifs dans ces dossiers.
+Réservation d’un trajet avec informations personnelles
 
-4. Création des fichiers Docker
-Pour chaque dossier, on a créé un fichier Dockerfile pour chaque service :
+Backend – Django + Django REST Framework
+Authentification JWT des utilisateurs
 
-client : Dockerfile pour une application React,
-server : Dockerfile pour une application Django,
-monitoring : Dockerfile et fichiers de configuration pour Grafana et Prometheus,
-proxy : Dockerfile et fichier de configuration pour Nginx (reverse proxy).
-5. Initialisation du projet Git
-Une fois que le projet était mis en place avec tous les dossiers et fichiers nécessaires, on a initialisé un dépôt Git à la racine du projet F_Brain :
+API REST complète :
 
-git init
-Ensuite, on a effectué des commits réguliers pour chaque étape de la création : • Un commit pour chaque dossier (client, server, monitoring, proxy), • Un commit pour chaque avancement dans le projet (création des fichiers Dockerfile, ajout des configurations, etc.).
+CRUD des trajets
+
+Réservations
+
+Base de données relationnelle (PostgreSQL)
+
+Proxy – Nginx
+Redirection des requêtes HTTP vers le backend ou le frontend
+
+Sécurisation des endpoints via un reverse proxy
+
+Monitoring – Prometheus & Grafana
+Monitoring du backend (temps de réponse, nombre de requêtes)
+
+Statistiques système (CPU, RAM, latence)
+
+Dashboard personnalisables dans Grafana
+
+🔄 Workflow Git & DevOps
+🔧 Stratégie Git
+Feature_<Nom> : une branche par fonctionnalité
+
+Dev : branche d'intégration continue (CI)
+
+Main / Master : branche de production stable
+
+✅ Intégration Continue (CI)
+Sur chaque push vers Dev :
+
+✅ Exécution de tests unitaires
+
+✅ Build Docker automatique
+
+✅ Vérification des dépendances
+
+🚀 Déploiement Continu (CD)
+Si le build est validé : docker-compose up
+
+Déploiement sur environnement de test
+
+Une fois validé : merge vers master
+
+▶️ Lancer le projet localement
+# Lancer tous les services
+docker-compose up --build
+👥 Contributeurs
+Nelson (Feature_Nelson)
+
+TCHAPDA MBE NELSON
