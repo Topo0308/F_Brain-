@@ -37,17 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< Updated upstream
-    'django_prometheus',
-=======
     'django_prometheus',  # pour Prometheus monitoring
     'rest_framework',
     'rest_framework_simplejwt',
-    'django_prometheus',
     'corsheaders',
-    'api',  #  app
-
->>>>>>> Stashed changes
+    'api',  # app
 ]
 
 MIDDLEWARE = [
