@@ -37,7 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< Updated upstream
     'django_prometheus',
+=======
+    'django_prometheus',  # pour Prometheus monitoring
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_prometheus',
+    'corsheaders',
+    'api',  #  app
+
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -50,7 +60,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
-]
+    'corsheaders.middleware.CorsMiddleware',
+] 
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -100,6 +111,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# AUTHENTICATION BACKENDS
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 
 # Internationalization
