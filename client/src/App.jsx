@@ -1,13 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import Home from "./pages/Home";
-import CreateTrajet from "./pages/CreateTrajet";
-import Reserve from "./pages/Reserve";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Navbar from "./components/Navbar";
-import './App.css';  
-import { useState } from "react";
-import { AuthProvider, useAuth } from "./context/auth"; // Assure-toi que ce contexte existe
+import React from "react";
 
 function ProtectedRoute({ element }) {
   const { user } = useAuth();
