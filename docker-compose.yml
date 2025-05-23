@@ -1,10 +1,10 @@
 services:
-# Conteneur pour l'application React (client)
+  # Conteneur pour l'application React (client)
   client:
     build: ./client  
     container_name: react-app
     ports:
-       - "5174:80"  
+      - "5174:80"  
     networks:
       - fbrain_network
     environment:
@@ -30,6 +30,21 @@ services:
       - fbrain_network
     environment:
       - TZ=Europe/Paris
+
+  # Conteneur pour PostgreSQL (Base de données)
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: fbrain_db
+      POSTGRES_USER: fbrain_user
+      POSTGRES_PASSWORD: fbrain_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - fbrain_network
 
   # Conteneur pour Grafana (Monitoring)
   grafana:
@@ -58,4 +73,5 @@ networks:
   fbrain_network:
     driver: bridge
 
-
+volumes:
+  pgdata:

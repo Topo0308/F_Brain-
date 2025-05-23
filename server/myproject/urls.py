@@ -19,5 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/trajets/', include('trajets.urls')),  # <-- inclure l'app trajets ici
+    path('api/', include('api.urls')),  # <- ici
+    path('trajets/', include('trajets.urls')),  # tes autres routes
 ]
+
