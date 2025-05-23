@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
   # Conteneur avec SSH 
   devops2025:
@@ -19,6 +20,8 @@ services:
     stdin_open: true
     tty: true
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   # Conteneur pour l'application React (client)
