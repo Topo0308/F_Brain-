@@ -1,7 +1,11 @@
-# server/trajets/urls.py
-from django.urls import path
-from .views import TrajetListCreateView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TrajetViewSet, ReservationViewSet
+
+router = DefaultRouter()
+router.register(r'trajets', TrajetViewSet)
+router.register(r'reservations', ReservationViewSet)
 
 urlpatterns = [
-    path('', TrajetListCreateView.as_view(), name='trajet-list-create'),
+    path('', include(router.urls)),
 ]
