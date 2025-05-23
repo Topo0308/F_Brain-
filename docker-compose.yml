@@ -1,7 +1,10 @@
 services:
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 8b7fc9a (authentification des utilisateurs)
 =======
 >>>>>>> parent of 8b7fc9a (authentification des utilisateurs)
 
@@ -22,10 +25,13 @@ services:
     tty: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 8b7fc9a (authentification des utilisateurs)
 =======
 >>>>>>> parent of 8b7fc9a (authentification des utilisateurs)
   # Conteneur pour l'application React (client)

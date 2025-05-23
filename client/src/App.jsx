@@ -1,4 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import Home from "./pages/Home";
+import CreateTrajet from "./pages/CreateTrajet";
+import Reserve from "./pages/Reserve";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
+import { AuthProvider, useAuth } from "./context/auth";
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
 function ProtectedRoute({ element }) {
   const { user } = useAuth();
