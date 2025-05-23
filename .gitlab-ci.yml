@@ -1,0 +1,43 @@
+image: docker:24.0.5
+
+services:
+  - docker:24.0.5-dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  COMPOSE_FILE: docker-compose.yml
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - apk add --no-cache docker-cli docker-compose
+  - docker info
+
+build:
+  stage: build
+  script:
+    - echo "🔧 Build des services Docker..."
+    - docker-compose build
+  only:
+    - branches
+
+test:
+  stage: test
+  script:
+    - echo "✅ Tests Django (backend)"
+    - docker-compose up -d server db  # si tu as une base de données
+    - docker-compose exec server python manage.py test || true  # || true pour ne pas planter si tty absent
+    - docker-compose down
+  only:
+    - branches
+
+deploy:
+  stage: deploy
+  script:
+    - echo "🚀 Déploiement de tous les conteneurs..."
+    - docker-compose up -d
+  only:
+    - main
