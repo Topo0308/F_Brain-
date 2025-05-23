@@ -19,5 +19,16 @@ from django.urls import path
 from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< Updated upstream
     path('', include('django_prometheus.urls')),
+=======
+
+    # Routes d'authentification et enregistrement (depuis l'app 'api')
+    path('api/', include('api.urls')),
+
+    # Routes des trajets
+    path('trajets/', include('trajets.urls')),
+>>>>>>> Stashed changes
 ]
+
+

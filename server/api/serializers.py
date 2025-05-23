@@ -1,22 +1,34 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Trajet, Reservation
 
-class UserSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(write_only=True)
+    tel = serializers.CharField(write_only=True)
+    has_permis = serializers.BooleanField(write_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['username', 'email', 'tel', 'has_permis', 'password', 'password2']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True},
+        }
 
-class TrajetSerializer(serializers.ModelSerializer):
-    conducteur = UserSerializer(read_only=True)
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password": "Les mots de passe ne correspondent pas."})
+        return data
 
-    class Meta:
-        model = Trajet
-        fields = '__all__'
-
-class ReservationSerializer(serializers.ModelSerializer):
-    passager = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Reservation
-        fields = '__all__'
+    def create(self, validated_data):
+        tel = validated_data.pop('tel')
+        has_permis = validated_data.pop('has_permis')
+        validated_data.pop('password2')
+        
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+        
+        
+        return user

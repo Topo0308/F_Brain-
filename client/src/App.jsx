@@ -1,7 +1,20 @@
+<<<<<<< Updated upstream
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+=======
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import Home from "./pages/Home";
+import CreateTrajet from "./pages/CreateTrajet";
+import Reserve from "./pages/Reserve";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
+import './App.css';  
+import { useState } from "react";
+import { AuthProvider, useAuth } from "./context/auth"; // Assure-toi que ce contexte existe
+>>>>>>> Stashed changes
 
 function App() {
   const [count, setCount] = useState(0)
