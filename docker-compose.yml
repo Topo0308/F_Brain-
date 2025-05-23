@@ -1,22 +1,5 @@
 services:
-
-  # Conteneur avec SSH 
-  devops2025:
-    build: ./server  
-    container_name: devops2025
-    image: devops2025-image
-    ports:
-      - "2222:22" 
-    volumes:
-      - ./server:/app  
-    networks:
-      - fbrain_network 
-    environment:
-      - TZ=Europe/Paris
-    stdin_open: true
-    tty: true
-
-  # Conteneur pour l'application React (client)
+# Conteneur pour l'application React (client)
   client:
     build: ./client  
     container_name: react-app
