@@ -15,26 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from django.urls import path, include
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    path('', include('django_prometheus.urls')),
-=======
-=======
->>>>>>> Stashed changes
-
-    # Routes d'authentification et enregistrement (depuis l'app 'api')
     path('api/', include('api.urls')),
-
-    # Routes des trajets
-    path('trajets/', include('trajets.urls')),
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 ]
 
 
