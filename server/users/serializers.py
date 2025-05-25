@@ -16,6 +16,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        validated_data.pop('password2')
-        user = CustomUser.objects.create_user(**validated_data)
+        validated_data.pop('password2')  # retirer password2 qui n'est pas dans le modèle
+        password = validated_data.pop('password')  # extraire password
+        user = CustomUser(**validated_data)        # créer l'instance sans password
+        user.set_password(password)                 # hasher et définir le mot de passe
+        user.save()                                 # sauvegarder dans la DB
         return user
