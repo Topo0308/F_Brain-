@@ -8,14 +8,16 @@ import Navbar from "./components/Navbar";
 import { useState } from "react";
 import { AuthProvider, useAuth } from "./context/auth"; // Assure-toi que ce contexte existe
 
+// Composant pour protéger les routes accessibles seulement aux utilisateurs connectés
 function ProtectedRoute({ element }) {
   const { user } = useAuth();
-  return user ? element : <Navigate to="/login" />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  return element;
 }
 
 function AppRoutes() {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginClick = () => navigate("/login");
@@ -35,6 +37,8 @@ function AppRoutes() {
         <Route path="/reserve/:id" element={<Reserve />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* Si aucune route ne matche, rediriger vers la page d'accueil */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
