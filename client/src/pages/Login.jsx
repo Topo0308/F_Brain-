@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'  // import
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()  // hook pour redirection
 
   const handleLogin = async () => {
     try {
@@ -14,6 +16,7 @@ export default function Login() {
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
       alert('Connexion réussie');
+      navigate('/dashboard')  // redirection vers dashboard
     } catch (err) {
       console.error('Erreur de connexion :', err.response?.data || err.message);
       alert('Échec de connexion');
