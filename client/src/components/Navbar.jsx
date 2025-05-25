@@ -48,8 +48,7 @@ export default function Navbar({ onLoginClick, onSignupClick, onCreateTripClick 
             <Button onClick={onSignupClick}>Créer un compte</Button>
           </>
         ) : (
-          <>
-            <Button onClick={onCreateTripClick}>Créer un trajet</Button>
+          <>  
             <Button onClick={logout}>Déconnexion</Button>
           </>
         )}
