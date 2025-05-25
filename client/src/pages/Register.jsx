@@ -34,6 +34,7 @@ export default function RegisterForm() {
 
     if(res.ok){
       alert('Inscription réussie!');
+      window.location.href = "/login"; 
       // redirige ou connecte l'utilisateur
     } else {
       alert('Erreur: ' + JSON.stringify(data));
@@ -41,7 +42,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <form className="register-form" nSubmit={handleSubmit}>
+    <form className="register-form" onSubmit={handleSubmit}>
       <input name="username" value={form.username} onChange={handleChange} placeholder="Nom" required />
       <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" required />
       <input name="tel" value={form.tel} onChange={handleChange} placeholder="Téléphone" />

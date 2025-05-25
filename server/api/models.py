@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 class Trajet(models.Model):
-    conducteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    conducteur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='api_trajets')
     lieu_depart = models.CharField(max_length=100)
     lieu_arrivee = models.CharField(max_length=100)
     date = models.DateField()
@@ -10,9 +10,12 @@ class Trajet(models.Model):
     places_disponibles = models.IntegerField()
 
     def __str__(self):
-        return f"{self.lieu_depart} -> {self.lieu_arrivee}"
+        return f"{self.lieu_depart} ➡ {self.lieu_arrivee} le {self.date}"
 
 class Reservation(models.Model):
-    passager = models.ForeignKey(User, on_delete=models.CASCADE)
-    trajet = models.ForeignKey(Trajet, on_delete=models.CASCADE)
-    informations = models.TextField()
+    trajet = models.ForeignKey(Trajet, on_delete=models.CASCADE, related_name='api_reservations')
+    passager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reservations_api', null=True)
+    places_reservees = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.passager.username} - {self.trajet}"
