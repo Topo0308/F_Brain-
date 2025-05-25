@@ -42,7 +42,6 @@ export default function Navbar({ onLoginClick, onSignupClick, onCreateTripClick 
     <Nav>
       <Title>EASY-WAY</Title>
       <Buttons>
-        <Button onClick={() => window.location.href = '/'}>Home</Button>
         {!user ? (
           <>
             <Button onClick={onLoginClick}>Se connecter</Button>

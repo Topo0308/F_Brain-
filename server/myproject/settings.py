@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    'api',  # app
-    'trajets',  # app
+    'api',  
+    'trajets',  
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -91,9 +92,16 @@ DATABASES = {
         'USER': 'fbrain_user',
         'PASSWORD': 'fbrain_pass',
         'HOST': 'localhost',  # IMPORTANT : doit correspondre au nom du service Docker
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+AUTHENTICATION_BACKENDS = [
+    'users.auth_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Password validation
