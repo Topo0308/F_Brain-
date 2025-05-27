@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 COPY . .
-
+ENV POETRY_VIRTUALENVS_CREATE=false 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 

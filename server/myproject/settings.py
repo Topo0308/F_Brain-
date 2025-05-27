@@ -30,6 +30,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672//")
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
 
 # Application definition
 
@@ -47,6 +53,8 @@ INSTALLED_APPS = [
     'api',  
     'trajets',  
     'users',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -91,8 +99,8 @@ DATABASES = {
         'NAME': 'fbrain_db',
         'USER': 'fbrain_user',
         'PASSWORD': 'fbrain_pass',
-        'HOST': 'localhost',  # IMPORTANT : doit correspondre au nom du service Docker
-        'PORT': '5433',
+        'HOST': 'localhost',  
+        'PORT': '5432',
     }
 }
 
