@@ -1,26 +1,21 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Trajet
-from .forms import TrajetForm
+from rest_framework import viewsets, permissions
+from .models import Trajet, Reservation
+from .serializers import TrajetSerializer, ReservationSerializer
 
-def trajets_list(request):
-    trajets = Trajet.objects.all().order_by('-date')
-    return render(request, 'trajets/home.html', {'trajets': trajets})
+class TrajetViewSet(viewsets.ModelViewSet):
+    queryset = Trajet.objects.all()
+    serializer_class = TrajetSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-@login_required
-def dashboard(request):
-    trajets = Trajet.objects.filter(conducteur=request.user)
-    return render(request, 'trajets/dashboard.html', {'trajets': trajets})
+    def perform_create(self, serializer):
+        # Associer automatiquement le conducteur au trajet
+        serializer.save(conducteur=self.request.user)
 
-@login_required
-def create_trajet(request):
-    if request.method == 'POST':
-        form = TrajetForm(request.POST)
-        if form.is_valid():
-            trajet = form.save(commit=False)
-            trajet.conducteur = request.user
-            trajet.save()
-            return redirect('dashboard')
-    else:
-        form = TrajetForm()
-    return render(request, 'trajets/create_trajet.html', {'form': form})
+class ReservationViewSet(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Associer automatiquement le passager à la réservation (si souhaité)
+        serializer.save(passager=self.request.user)

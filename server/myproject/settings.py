@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_prometheus',  # pour Prometheus monitoring
-    'rest_framework',
-    'rest_framework_simplejwt',
     'corsheaders',
     'api',  
     'trajets',  
