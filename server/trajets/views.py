@@ -8,7 +8,8 @@ class TrajetViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save()
+        # Associer automatiquement le conducteur au trajet
+        serializer.save(conducteur=self.request.user)
 
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
@@ -16,4 +17,5 @@ class ReservationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save()
+        # Associer automatiquement le passager à la réservation (si souhaité)
+        serializer.save(passager=self.request.user)
