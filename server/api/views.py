@@ -1,19 +1,19 @@
-from rest_framework import viewsets, permissions
-from .models import Trajet, Reservation
-from .serializers import TrajetSerializer, ReservationSerializer
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import get_user_model
 
-class TrajetViewSet(viewsets.ModelViewSet):
-    queryset = Trajet.objects.all()
-    serializer_class = TrajetSerializer
-    permission_classes = [permissions.IsAuthenticated]
+from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-    def perform_create(self, serializer):
-        serializer.save(conducteur=self.request.user)
+User = get_user_model()
 
-class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# === Vue d'inscription ===
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
 
-    def perform_create(self, serializer):
-        serializer.save(passager=self.request.user)
+
+# === Vue pour l'obtention du token JWT avec serializer personnalisé ===
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

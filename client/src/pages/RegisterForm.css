@@ -1,0 +1,12 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+}
+
+.register-form label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,22 +1,44 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Trajet, Reservation
+from users.models import CustomUser
+from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
 
-class TrajetSerializer(serializers.ModelSerializer):
-    conducteur = UserSerializer(read_only=True)
+# === Serializer pour l'inscription ===
+class RegisterSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(write_only=True)
 
     class Meta:
-        model = Trajet
-        fields = '__all__'
+        model = CustomUser
+        fields = ['username', 'email', 'tel', 'has_permis', 'password', 'password2']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True},
+        }
 
-class ReservationSerializer(serializers.ModelSerializer):
-    passager = UserSerializer(read_only=True)
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password": "Les mots de passe ne correspondent pas."})
+        validate_password(data['password'])  # facultatif mais recommandé
+        return data
 
-    class Meta:
-        model = Reservation
-        fields = '__all__'
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        password = validated_data.pop('password')
+        user = CustomUser(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+# === Serializer personnalisé pour JWT ===
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Ajouter des infos personnalisées au token si besoin
+        token['username'] = user.username
+        token['email'] = user.email
+        token['id'] = user.id
+        return token
