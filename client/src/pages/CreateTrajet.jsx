@@ -17,7 +17,7 @@ export default function CreateTrajet({ refreshTrajets }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post('http://localhost:8081/api/trajets/', form, {
+      await axios.post('http://localhost:8000/api/trajets/', form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access')}`,
         },

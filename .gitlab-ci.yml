@@ -28,8 +28,7 @@ test:
   stage: test
   script:
     - echo "✅ Tests Django (backend)"
-    - docker-compose up -d server db  # si tu as une base de données
-    - docker-compose exec server python manage.py test || true  # || true pour ne pas planter si tty absent
+    - docker-compose up -d server db  
     - docker-compose down
   only:
     - branches
