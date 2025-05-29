@@ -1,18 +1,21 @@
-import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    axios.get('/api/auth/user/').then(res => setUser(res.data.username));
-  }, []);
+  const login = (username) => {
+    setUser({ username });
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

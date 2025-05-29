@@ -1,27 +1,39 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/auth';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
-  const [form, setForm] = useState({ username: '', password: '' });
+const Login = () => {
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('/api/auth/login/', form);
+    const res = await fetch('/api/users/login/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials)
+    });
+    const data = await res.json();
+    if (res.ok) {
+      login(credentials.username);
       navigate('/');
-    } catch (err) {
-      alert('Connexion échouée');
+    } else {
+      alert(data.error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Connexion</h2>
-      <input placeholder="Nom d'utilisateur" onChange={e => setForm({ ...form, username: e.target.value })} />
-      <input type="password" placeholder="Mot de passe" onChange={e => setForm({ ...form, password: e.target.value })} />
-      <button type="submit">Se connecter</button>
+      <input name="username" placeholder="Nom d'utilisateur" onChange={handleChange} />
+      <input name="password" type="password" placeholder="Mot de passe" onChange={handleChange} />
+      <button type="submit">Connexion</button>
     </form>
   );
-}
+};
+
+export default Login;

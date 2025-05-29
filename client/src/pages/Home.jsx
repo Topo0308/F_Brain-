@@ -1,25 +1,28 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+const Home = () => {
   const [trajets, setTrajets] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/trajets/').then(res => setTrajets(res.data));
+    fetch('/api/trajets/')
+      .then(res => res.json())
+      .then(data => setTrajets(data));
   }, []);
 
   return (
     <div>
-      <h1>Liste des trajets</h1>
+      <h2>Liste des trajets</h2>
       <ul>
-        {trajets.map(t => (
-          <li key={t.id}>
-            {t.lieu_depart} - {t.lieu_arrivee} ({t.places_disponibles} places)
-            <Link to={`/reserve/${t.id}`}>Réserver</Link>
+        {trajets.map(trajet => (
+          <li key={trajet.id}>
+            {trajet.lieu_depart} ➔ {trajet.lieu_arrivee} le {trajet.date} à {trajet.heure} |
+            <Link to={`/reserve/${trajet.id}`}> Réserver </Link>
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
+
+export default Home;
