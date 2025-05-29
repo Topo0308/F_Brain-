@@ -1,55 +1,24 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import Home from "./pages/Home";
-import CreateTrajet from "./pages/CreateTrajet";
-import Reserve from "./pages/Reserve";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard"; 
-import Navbar from "./components/Navbar";
-import { useState } from "react";
-import { AuthProvider, useAuth } from "./context/auth";
-
-function ProtectedRoute({ element }) {
-  const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  return element;
-}
-
-function AppRoutes() {
-  const navigate = useNavigate();
-
-  const handleLoginClick = () => navigate("/login");
-  const handleSignupClick = () => navigate("/register");
-
-  return (
-    <>
-      <Navbar
-        onLoginClick={handleLoginClick}
-        onSignupClick={handleSignupClick}
-      />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> {/* ✅ AJOUT */}
-        <Route path="/create" element={<ProtectedRoute element={<CreateTrajet />} />} />
-        <Route path="/reserve/:id" element={<Reserve />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
-  );
-}
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import CreateTrajet from './pages/CreateTrajet';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Reserve from './pages/Reserve';
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </AuthProvider>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/create" element={<CreateTrajet />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reserve/:id" element={<Reserve />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
