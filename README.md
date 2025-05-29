@@ -1,80 +1,109 @@
 🚗 Application de Covoiturage – F_Brain
-🧠 Projet F_Brain – Application Web de Covoiturage
-Cette application est une plateforme web de covoiturage conçue pour permettre aux utilisateurs de proposer ou de réserver des trajets. Elle s’appuie sur une architecture moderne et conteneurisée basée sur Docker, intégrant React, Django, Nginx, Grafana, et Prometheus.
+🧠 F_Brain est une plateforme web de covoiturage qui permet :
 
-🧱 Structure du Projet
-bash
-Copier
-Modifier
+aux utilisateurs inscrits de créer des trajets depuis leur tableau de bord,
+
+aux visiteurs de consulter ces trajets sur la page d’accueil,
+
+et de réserver un trajet en remplissant un formulaire (nom, email, téléphone).
+
+Le projet utilise une architecture moderne avec Docker, et s’appuie uniquement sur React (frontend) et Django (backend) – sans utiliser Django REST Framework.
+
+🧱 Structure du projet
 F_Brain/
+├── client/                          # Frontend React
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   ├── index.html
+│   ├── context/
+│   │   └── auths.js
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   └── Dashboard.jsx
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── CreateTrajet.jsx
+│   │   └── Reserve.jsx
+│   └── package.json
 │
-├── client/          # Frontend React
-├── server/          # Backend Django + DRF
-├── proxy/           # Nginx reverse proxy
-├── monitoring/      # Grafana + Prometheus
-├── docker-compose.yml
-└── README.md
-⚙️ Fonctionnalités principales
+├── server/                          # Backend Django
+│   ├── manage.py
+│   ├── myproject/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   └── urls.py
+│   ├── tajets/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   └── admin.py
+│   ├── users/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   └── admin.py
+│
+├── proxy/                           # Nginx reverse proxy
+│   └── nginx.conf
+│
+├── monitoring/                      # Prometheus + Grafana config
+│   ├── prometheus.yml
+│   └── grafana.ini
+│
+├── docker-compose.yml               # Déploiement
+└── README.md                        # Documentation du projet
+
+⚙️ Fonctionnalités
 Frontend – React
-Page d'inscription et de connexion
+Inscription et connexion utilisateur
 
-Liste des trajets proposés avec le nombre de places disponibles
+Création de trajets (dashboard)
 
-Filtres : lieu de départ, d'arrivée, date, heure
+Affichage des trajets sur la page d’accueil
 
-Réservation d’un trajet avec informations personnelles
+Réservation d’un trajet avec saisie des infos personnelles
 
-Backend – Django + Django REST Framework
-Authentification JWT des utilisateurs
+Filtres par lieu, date et heure
 
-API REST complète :
+Backend – Django (sans REST Framework)
+Authentification manuelle via views
 
-CRUD des trajets
+Gestion des trajets (CRUD)
 
 Réservations
 
-Base de données relationnelle (PostgreSQL)
+Base de données PostgreSQL
 
 Proxy – Nginx
-Redirection des requêtes HTTP vers le backend ou le frontend
+Redirection des requêtes HTTP (vers React ou Django)
 
-Sécurisation des endpoints via un reverse proxy
+Sécurisation des endpoints via reverse proxy
 
 Monitoring – Prometheus & Grafana
-Monitoring du backend (temps de réponse, nombre de requêtes)
+Suivi des performances du backend (requêtes, temps de réponse)
 
-Statistiques système (CPU, RAM, latence)
+Statistiques système (CPU, RAM)
 
-Dashboard personnalisables dans Grafana
+Dashboards personnalisables dans Grafana
 
-🔄 Workflow Git & DevOps
-🔧 Stratégie Git
-Feature_<Nom> : une branche par fonctionnalité
+🔄 Git & DevOps
+Stratégie Git
+feature_<nom> : une branche par fonctionnalité
 
-Dev : branche d'intégration continue (CI)
+dev : branche d’intégration continue
 
-Main / Master : branche de production stable
+main : branche de production stable
 
-✅ Intégration Continue (CI)
-Sur chaque push vers Dev :
+Intégration Continue (CI)
+Tests automatiques à chaque push sur dev
 
-✅ Exécution de tests unitaires
+Build Docker automatique
 
-✅ Build Docker automatique
-
-✅ Vérification des dépendances
-
-🚀 Déploiement Continu (CD)
-Si le build est validé : docker-compose up
-
-Déploiement sur environnement de test
-
-Une fois validé : merge vers master
-
-▶️ Lancer le projet localement
-# Lancer tous les services
-docker-compose up --build
-👥 Contributeurs
-Nelson (Feature_Nelson)
-
-TCHAPDA MBE NELSON
+Vérification des dépendances
