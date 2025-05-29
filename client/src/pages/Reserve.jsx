@@ -1,31 +1,28 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function Reserve() {
-  const { id } = useParams()
-  const [infos, setInfos] = useState("")
+  const { id } = useParams();
+  const [form, setForm] = useState({ nom: '', email: '', telephone: '' });
 
-  const handleReserve = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     try {
-      await axios.post('http://localhost:8081/api/reservations/', {
-        trajet: id,
-        informations: infos
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access')}`
-        }
-      })
-      alert("Réservation effectuée !")
-    } catch (e) {
-      alert("Erreur lors de la réservation.")
+      await axios.post(`/api/trajets/${id}/reserve/`, form);
+      alert('Réservation réussie');
+    } catch (err) {
+      alert('Erreur de réservation');
     }
-  }
+  };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded">
-      <textarea placeholder="Vos infos" className="w-full p-2 border" onChange={e => setInfos(e.target.value)} />
-      <button onClick={handleReserve} className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Réserver</button>
-    </div>
-  )
+    <form onSubmit={handleSubmit}>
+      <h2>Réserver un trajet</h2>
+      <input placeholder="Nom" onChange={e => setForm({ ...form, nom: e.target.value })} />
+      <input placeholder="Email" type="email" onChange={e => setForm({ ...form, email: e.target.value })} />
+      <input placeholder="Téléphone" onChange={e => setForm({ ...form, telephone: e.target.value })} />
+      <button type="submit">Réserver</button>
+    </form>
+  );
 }
