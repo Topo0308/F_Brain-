@@ -3,3 +3,4 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(default='no-reply@example.com')  # Ajout du champ avec une valeur par défaut

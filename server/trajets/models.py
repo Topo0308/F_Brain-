@@ -14,9 +14,9 @@ class Trajet(models.Model):
 
 class Reservation(models.Model):
     trajet = models.ForeignKey(Trajet, on_delete=models.CASCADE)
-    nom = models.CharField(max_length=100)
-    email = models.EmailField()
-    telephone = models.CharField(max_length=20)
+    nom = models.CharField(max_length=100, default="Nom inconnu")  # ✅ Ajout d'un défaut
+    email = models.EmailField(default="no-reply@example.com")       # ✅ Ajout d'un défaut
+    telephone = models.CharField(max_length=20, default="0000000000")
 
     def __str__(self):
         return f"Réservation pour {self.nom} - {self.trajet}"

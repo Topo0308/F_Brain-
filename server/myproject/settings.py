@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_prometheus',  
     'corsheaders',
-    'api',  
     'trajets',  
     'users',
     'django_celery_results',
@@ -104,10 +103,8 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-AUTHENTICATION_BACKENDS = [
-    'users.auth_backend.EmailOrUsernameModelBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+AUTHENTICATION_BACKENDS = ['users.auth_backend.EmailOrUsernameModelBackend']
+
 
 
 # Password validation
