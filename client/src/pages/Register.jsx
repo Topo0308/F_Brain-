@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -9,14 +11,22 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/users/register/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    });
-    const data = await res.json();
-    if (res.ok) alert('Inscription réussie');
-    else alert(data.error);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/users/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Inscription réussie');
+        navigate('/login'); 
+      } else {
+        alert(data.error || 'Une erreur est survenue');
+      }
+    } catch (error) {
+      alert("Erreur réseau");
+    }
   };
 
   return (

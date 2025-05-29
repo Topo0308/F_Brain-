@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+
+User = get_user_model()
 
 @csrf_exempt
 def register_user(request):
