@@ -1,34 +1,18 @@
-// src/context/auth.jsx
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("access");
-    if (token) {
-      
-      setUser({ token });
-    }
+    axios.get('/api/auth/user/').then(res => setUser(res.data.username));
   }, []);
 
-  const login = (userData) => setUser(userData);
-  const logout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    setUser(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
-

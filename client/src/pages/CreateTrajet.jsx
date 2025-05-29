@@ -1,49 +1,38 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-export default function CreateTrajet({ refreshTrajets }) {
+export default function CreateTrajet() {
   const [form, setForm] = useState({
     lieu_depart: '',
     lieu_arrivee: '',
     date: '',
     heure: '',
-    places_disponibles: 1,
-  })
+    places_disponibles: '',
+    conducteur: 1 // ID fictif si auth manuelle, à améliorer plus tard
+  });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async e => {
+    e.preventDefault();
     try {
-      await axios.post('http://localhost:8000/api/trajets/', form, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access')}`,
-        },
-      })
-      alert('Trajet créé avec succès !')
-      setForm({
-        lieu_depart: '',
-        lieu_arrivee: '',
-        date: '',
-        heure: '',
-        places_disponibles: 1,
-      })
-      if (refreshTrajets) refreshTrajets()
+      await axios.post('/api/trajets/create/', form);
+      navigate('/');
     } catch (err) {
-      alert("Erreur lors de la création")
+      alert('Erreur lors de la création');
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 p-4 bg-white shadow-md rounded">
-      <input name="lieu_depart" placeholder="Départ" value={form.lieu_depart} onChange={handleChange} className="w-full border p-2" />
-      <input name="lieu_arrivee" placeholder="Arrivée" value={form.lieu_arrivee} onChange={handleChange} className="w-full border p-2" />
-      <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full border p-2" />
-      <input type="time" name="heure" value={form.heure} onChange={handleChange} className="w-full border p-2" />
-      <input type="number" name="places_disponibles" value={form.places_disponibles} onChange={handleChange} className="w-full border p-2" />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Créer Trajet</button>
+    <form onSubmit={handleSubmit}>
+      <h2>Créer un trajet</h2>
+      <input placeholder="Lieu de départ" onChange={e => setForm({ ...form, lieu_depart: e.target.value })} />
+      <input placeholder="Lieu d’arrivée" onChange={e => setForm({ ...form, lieu_arrivee: e.target.value })} />
+      <input type="date" onChange={e => setForm({ ...form, date: e.target.value })} />
+      <input type="time" onChange={e => setForm({ ...form, heure: e.target.value })} />
+      <input type="number" placeholder="Places disponibles" onChange={e => setForm({ ...form, places_disponibles: e.target.value })} />
+      <button type="submit">Créer</button>
     </form>
-  )
+  );
 }

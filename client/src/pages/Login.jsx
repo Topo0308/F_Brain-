@@ -1,33 +1,27 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'  // import
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()  // hook pour redirection
+  const [form, setForm] = useState({ username: '', password: '' });
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/token/', {
-        username,
-        password,
-      });
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
-      alert('Connexion réussie');
-      navigate('/dashboard')  // redirection vers dashboard
+      await axios.post('/api/auth/login/', form);
+      navigate('/');
     } catch (err) {
-      console.error('Erreur de connexion :', err.response?.data || err.message);
-      alert('Échec de connexion');
+      alert('Connexion échouée');
     }
   };
 
   return (
-    <div>
-      <input onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Connexion</h2>
+      <input placeholder="Nom d'utilisateur" onChange={e => setForm({ ...form, username: e.target.value })} />
+      <input type="password" placeholder="Mot de passe" onChange={e => setForm({ ...form, password: e.target.value })} />
+      <button type="submit">Se connecter</button>
+    </form>
   );
 }
