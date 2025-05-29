@@ -36,9 +36,6 @@ F_Brain/
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
-│   ├── api/
-│   │   ├── __init__.py
-│   │   └── urls.py
 │   ├── tajets/
 │   │   ├── __init__.py
 │   │   ├── models.py
