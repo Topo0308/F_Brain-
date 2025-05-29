@@ -1,38 +1,39 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
-export default function CreateTrajet() {
+const CreateTrajet = () => {
   const [form, setForm] = useState({
     lieu_depart: '',
     lieu_arrivee: '',
     date: '',
     heure: '',
-    places_disponibles: '',
-    conducteur: 1 // ID fictif si auth manuelle, à améliorer plus tard
+    places_disponibles: ''
   });
 
-  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('/api/trajets/create/', form);
-      navigate('/');
-    } catch (err) {
-      alert('Erreur lors de la création');
-    }
+    const res = await fetch('/api/trajets/create/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    });
+    const data = await res.json();
+    alert(data.message || 'Trajet créé');
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Créer un trajet</h2>
-      <input placeholder="Lieu de départ" onChange={e => setForm({ ...form, lieu_depart: e.target.value })} />
-      <input placeholder="Lieu d’arrivée" onChange={e => setForm({ ...form, lieu_arrivee: e.target.value })} />
-      <input type="date" onChange={e => setForm({ ...form, date: e.target.value })} />
-      <input type="time" onChange={e => setForm({ ...form, heure: e.target.value })} />
-      <input type="number" placeholder="Places disponibles" onChange={e => setForm({ ...form, places_disponibles: e.target.value })} />
+      <input name="lieu_depart" placeholder="Départ" onChange={handleChange} />
+      <input name="lieu_arrivee" placeholder="Arrivée" onChange={handleChange} />
+      <input name="date" type="date" onChange={handleChange} />
+      <input name="heure" type="time" onChange={handleChange} />
+      <input name="places_disponibles" type="number" placeholder="Places" onChange={handleChange} />
       <button type="submit">Créer</button>
     </form>
   );
-}
+};
+
+export default CreateTrajet;
