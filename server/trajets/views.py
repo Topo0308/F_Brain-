@@ -1,21 +1,27 @@
-from rest_framework import viewsets, permissions
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 from .models import Trajet, Reservation
-from .serializers import TrajetSerializer, ReservationSerializer
+from django.contrib.auth.decorators import login_required
 
-class TrajetViewSet(viewsets.ModelViewSet):
-    queryset = Trajet.objects.all()
-    serializer_class = TrajetSerializer
-    permission_classes = [permissions.IsAuthenticated]
+@csrf_exempt
+def list_trajets(request):
+    trajets = Trajet.objects.all().values()
+    return JsonResponse(list(trajets), safe=False)
 
-    def perform_create(self, serializer):
-        # Associer automatiquement le conducteur au trajet
-        serializer.save(conducteur=self.request.user)
+@csrf_exempt
+def create_trajet(request):
+    data = json.loads(request.body)
+    trajet = Trajet.objects.create(**data)
+    return JsonResponse({"message": "Trajet créé"})
 
-class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_create(self, serializer):
-        # Associer automatiquement le passager à la réservation (si souhaité)
-        serializer.save(passager=self.request.user)
+@csrf_exempt
+def reserve_trajet(request, trajet_id):
+    trajet = Trajet.objects.get(id=trajet_id)
+    if trajet.places_disponibles > 0:
+        data = json.loads(request.body)
+        Reservation.objects.create(trajet=trajet, **data)
+        trajet.places_disponibles -= 1
+        trajet.save()
+        return JsonResponse({"message": "Réservation réussie"})
+    return JsonResponse({"error": "Complet"}, status=400)

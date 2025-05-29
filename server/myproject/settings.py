@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_prometheus',  # pour Prometheus monitoring
+    'django_prometheus',  
     'corsheaders',
     'api',  
     'trajets',  
