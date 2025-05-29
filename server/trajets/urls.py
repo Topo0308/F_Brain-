@@ -1,11 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import TrajetViewSet, ReservationViewSet
-
-router = DefaultRouter()
-router.register(r'trajets', TrajetViewSet)
-router.register(r'reservations', ReservationViewSet)
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('trajets/', views.list_trajets, name='list_trajets'),
+    path('trajets/create/', views.create_trajet, name='create_trajet'),
+    path('trajets/<int:trajet_id>/reserve/', views.reserve_trajet, name='reserve_trajet'),
 ]

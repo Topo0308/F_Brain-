@@ -1,9 +1,13 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from django.contrib.auth.models import User
 
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = ('username', 'email', 'tel', 'has_permis', 'is_staff')
+admin.site.unregister(User)
+admin.site.register(User)
 
-admin.site.register(CustomUser, CustomUserAdmin)
+
+# users/apps.py
+from django.apps import AppConfig
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'

@@ -11,69 +11,51 @@ Le projet utilise une architecture moderne avec Docker, et s’appuie uniquement
 
 🧱 Structure du projet
 F_Brain/
+├── client/                          # Frontend React
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   ├── index.html
+│   ├── context/
+│   │   └── auths.js
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   └── Dashboard.jsx
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── CreateTrajet.jsx
+│   │   └── Reserve.jsx
+│   └── package.json
 │
-├── client/
-│   ├── public/
-│   └── src/
-│       ├── App.css
-│       ├── App.jsx
-│       ├── main.jsx
-│       │
-│       ├── components/
-│       │   ├── Dashboard.jsx
-│       │   └── Navbar.jsx
-│       │
-│       ├── context/
-│       │   └── auths.jsx
-│       │
-│       └── pages/
-│           ├── CreateTraje.jsx
-│           ├── Home.jsx
-│           ├── Login.jsx
-│           ├── Register.jsx
-│           └── Reserve.jsx
+├── server/                          # Backend Django
+│   ├── manage.py
+│   ├── myproject/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── tajets/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   └── admin.py
+│   ├── users/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   └── admin.py
 │
-├── docker-compose.yml
+├── proxy/                           # Nginx reverse proxy
+│   └── nginx.conf
 │
-├── proxy/
-│   └── default.conf (configuration Nginx)
-│
-├── monitoring/
+├── monitoring/                      # Prometheus + Grafana config
 │   ├── prometheus.yml
-│   └── grafana/ (dashboards, datasources)
+│   └── grafana.ini
 │
-└── server/
-    ├── api/
-    │   ├── __init__.py
-    │   ├── urls.py
-    │   └── views.py
-    │
-    ├── manage.py
-    │
-    ├── myproject/
-    │   ├── __init__.py
-    │   ├── settings.py
-    │   ├── urls.py
-    │   └── wsgi.py
-    │
-    ├── trajets/
-    │   ├── __init__.py
-    │   ├── admin.py
-    │   ├── apps.py
-    │   ├── models.py
-    │   ├── urls.py
-    │   ├── views.py
-    │   └── forms.py
-    │
-    └── users/
-        ├── __init__.py
-        ├── admin.py
-        ├── apps.py
-        ├── models.py
-        ├── urls.py
-        ├── views.py
-        └── forms.py
-
+├── docker-compose.yml               # Déploiement
+└── README.md                        # Documentation du projet
 
 ⚙️ Fonctionnalités
 Frontend – React
