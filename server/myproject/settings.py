@@ -54,8 +54,11 @@ INSTALLED_APPS = [
     'django_celery_beat',
 ]
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,8 +67,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ] 
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SAMESITE = 'Lax'      # 'Lax' permet d’envoyer les cookies dans les requêtes cross-site simples
+SESSION_COOKIE_SECURE = False        # en local, à True en prod HTTPS
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = False
+
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -140,9 +152,6 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
-
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 

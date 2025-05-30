@@ -15,9 +15,10 @@ const CreateTrajet = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/trajets/create/', {
+    const res = await fetch('http://127.0.0.1:8000/api/trajets/create/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include', // Pour envoyer les cookies de session
       body: JSON.stringify(form)
     });
     const data = await res.json();

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/auth';  
 
 const Login = () => {
+  const { login } = useContext(AuthContext); 
   const [form, setForm] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Hook de navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,12 +19,13 @@ const Login = () => {
       const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(form),
       });
       const data = await res.json();
       if (res.ok) {
+        login(data.username);  
         setMessage('Connexion réussie');
-        // Rediriger vers dashboard après un petit délai (pour voir le message)
         setTimeout(() => {
           navigate('/dashboard');
         }, 1000);
