@@ -25,9 +25,12 @@ def list_trajets(request):
     return JsonResponse(data, safe=False)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @csrf_protect 
 =======
+=======
+>>>>>>> parent of 3210e82 (Réservation du  nombre de places selon la disponibilité)
 @csrf_exempt
 @login_required
 >>>>>>> parent of 3210e82 (Réservation du  nombre de places selon la disponibilité)
