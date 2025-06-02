@@ -1,10 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+import React, { useState } from 'react';
 
 const CreateTrajet = () => {
   const [form, setForm] = useState({
@@ -15,39 +9,19 @@ const CreateTrajet = () => {
     places_disponibles: ''
   });
 
-  // On récupère le cookie CSRF dès que le composant est chargé
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/users/csrf/', {
-      method: 'GET',
-      credentials: 'include',
-    });
-  }, []);
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const csrfToken = getCookie('csrftoken');
-
-    if (!csrfToken) {
-      alert("Erreur : token CSRF introuvable. Recharge la page.");
-      return;
-    }
-
     const res = await fetch('http://127.0.0.1:8000/api/trajets/create/', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-      },
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
     });
-
     const data = await res.json();
-    alert(data.message || data.error || 'Réponse inconnue');
+    alert(data.message || 'Trajet créé');
   };
 
   return (
