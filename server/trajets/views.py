@@ -26,9 +26,12 @@ def list_trajets(request):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @csrf_protect 
 =======
+=======
+>>>>>>> parent of 3210e82 (Réservation du  nombre de places selon la disponibilité)
 =======
 >>>>>>> parent of 3210e82 (Réservation du  nombre de places selon la disponibilité)
 @csrf_exempt
