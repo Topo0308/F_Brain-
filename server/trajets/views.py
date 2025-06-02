@@ -24,8 +24,10 @@ def list_trajets(request):
 
 
 @csrf_exempt
-@login_required
 def create_trajet(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Authentification requise"}, status=401)
+
     if request.method == "POST":
         data = json.loads(request.body)
         trajet = Trajet.objects.create(
@@ -37,7 +39,9 @@ def create_trajet(request):
             conducteur=request.user
         )
         return JsonResponse({"message": "Trajet créé", "id": trajet.id})
+    
     return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+
 
 
 @csrf_exempt
