@@ -1,16 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
 User = get_user_model()
-
-
-@ensure_csrf_cookie
-def get_csrf_token(request):
-    return JsonResponse({"message": "CSRF cookie set"})
 
 @csrf_exempt
 def register_user(request):
