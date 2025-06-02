@@ -4,6 +4,8 @@ import json
 from .models import Trajet, Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
 
 @csrf_exempt
 def list_trajets(request):
@@ -23,9 +25,12 @@ def list_trajets(request):
     return JsonResponse(data, safe=False)
 
 
-@csrf_exempt
-@login_required
+@csrf_protect 
 def create_trajet(request):
+    print("Utilisateur courant :", request.user)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Authentification requise"}, status=401)
+
     if request.method == "POST":
         data = json.loads(request.body)
         trajet = Trajet.objects.create(
@@ -37,6 +42,7 @@ def create_trajet(request):
             conducteur=request.user
         )
         return JsonResponse({"message": "Trajet créé", "id": trajet.id})
+    
     return JsonResponse({"error": "Méthode non autorisée"}, status=405)
 
 
