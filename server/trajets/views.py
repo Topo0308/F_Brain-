@@ -24,13 +24,8 @@ def list_trajets(request):
     ]
     return JsonResponse(data, safe=False)
 
-<<<<<<< HEAD
-
-@csrf_protect 
-=======
 @csrf_exempt
 @login_required
->>>>>>> parent of 3210e82 (Réservation du  nombre de places selon la disponibilité)
 def create_trajet(request):
     print("Utilisateur courant :", request.user)
     if not request.user.is_authenticated:
