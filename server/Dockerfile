@@ -4,16 +4,13 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# ✅ Met à jour pip ici
 RUN python -m pip install --upgrade pip
 
-# ✅ Puis installe les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-
 COPY . .
-ENV POETRY_VIRTUALENVS_CREATE=false 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
+EXPOSE 8000
 
-
+# Commande par défaut
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]

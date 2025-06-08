@@ -103,13 +103,17 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fbrain_db',
-        'USER': 'fbrain_user',
-        'PASSWORD': 'fbrain_pass',
-        'HOST': 'localhost',  
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'fbrain_db'),
+        'USER': os.getenv('POSTGRES_USER', 'fbrain_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'fbrain_pass'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -139,6 +143,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:8000"
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -147,10 +152,13 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:8000",
 ]
 
 CSRF_COOKIE_DOMAIN = 'localhost'  
-SESSION_COOKIE_DOMAIN = 'localhost'
+#SESSION_COOKIE_DOMAIN = 'localhost'
+#ALLOWED_HOSTS = ['*']
+
 
 
 

@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
+      const res = await fetch('/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
