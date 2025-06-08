@@ -22,7 +22,7 @@ services:
       python manage.py collectstatic --noinput &&
       gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
       "
-    container_name: django-server
+    container_name: server
     ports:
       - "8081:8000"  
     depends_on:
@@ -35,7 +35,8 @@ services:
     environment:
       - TZ=Europe/Paris
     volumes:
-      - ./server/staticfiles:/app/staticfiles
+      - static_volume:/app/staticfiles
+
   # Conteneur pour Prometheus 
   prometheus:
     build: ./monitoring/prometheus
@@ -89,8 +90,11 @@ services:
       - fbrain_network
     environment:
       - TZ=Europe/Paris
+    depends_on:
+      - server
+      - client
     volumes:
-      - ./server/staticfiles:/app/staticfiles
+      - static_volume:/app/staticfiles
 
   # Conteneur pour RabbitMQ (Message Broker)
   rabbitmq:
@@ -132,3 +136,4 @@ networks:
 
 volumes:
   pgdata:
+  static_volume:
