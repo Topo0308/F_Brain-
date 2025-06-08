@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Assurez-vous que le contexte Auth est correctement configuré
 const CreateTrajet = () => {
   const [form, setForm] = useState({
     lieu_depart: '',

@@ -18,8 +18,9 @@ services:
     env_file: .env
     command: >
       sh -c "
-        python manage.py migrate &&
-        gunicorn server_config.wsgi:application --bind 0.0.0.0:8000
+      python manage.py migrate --noinput || exit 1 &&
+      python manage.py collectstatic --noinput &&
+      gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
       "
     container_name: django-server
     ports:
@@ -33,7 +34,8 @@ services:
       - fbrain_network
     environment:
       - TZ=Europe/Paris
-
+    volumes:
+      - ./server/staticfiles:/app/staticfiles
   # Conteneur pour Prometheus 
   prometheus:
     build: ./monitoring/prometheus
@@ -87,6 +89,8 @@ services:
       - fbrain_network
     environment:
       - TZ=Europe/Paris
+    volumes:
+      - ./server/staticfiles:/app/staticfiles
 
   # Conteneur pour RabbitMQ (Message Broker)
   rabbitmq:
@@ -112,7 +116,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     env_file: .env
-    command: celery -A server_config worker --loglevel=info
+    command: celery -A myproject worker --loglevel=info
     environment:
       DATABASE_URL: postgresql://fbrain_user:fbrain_pass@db:5432/fbrain_db
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/

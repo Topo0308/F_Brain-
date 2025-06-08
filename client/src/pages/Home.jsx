@@ -8,7 +8,7 @@ function Home() {
   useEffect(() => {
     const fetchTrajets = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/trajets/');
+        const res = await fetch('/api/trajets/');
         const data = await res.json();
         setTrajets(data);
       } catch (err) {

@@ -13,7 +13,7 @@ const Reserve = () => {
 
   // Récupère les infos du trajet pour afficher les places restantes
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/trajets/${id}/`)
+    fetch(`/api/trajets/${id}/`)
       .then(res => res.json())
       .then(data => setTrajet(data));
   }, [id]);
@@ -24,7 +24,7 @@ const Reserve = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://127.0.0.1:8000/api/trajets/${id}/reserve/`, {
+    const res = await fetch(`/api/trajets/${id}/reserve/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
