@@ -54,7 +54,7 @@ F_Brain/
 │   ├── prometheus.yml
 │   └── grafana.ini
 │
-├── docker-compose.yml               # Déploiement
+├── docker-compose.yml             
 └── README.md                        # Documentation du projet
 
 ⚙️ Fonctionnalités
