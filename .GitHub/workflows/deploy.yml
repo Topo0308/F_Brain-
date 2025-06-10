@@ -1,0 +1,63 @@
+name: CI/CD F_Brain
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: fbrain_db
+          POSTGRES_USER: fbrain_user
+          POSTGRES_PASSWORD: fbrain_pass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+
+    steps:
+    - name: 📥 Cloner le code
+      uses: actions/checkout@v3
+
+    - name: 🐍 Installer Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 🧪 Installer les dépendances Python
+      run: |
+        cd server
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 🛠️ Lancer les migrations et tests Django
+      env:
+        POSTGRES_DB: fbrain_db
+        POSTGRES_USER: fbrain_user
+        POSTGRES_PASSWORD: fbrain_pass
+        POSTGRES_HOST: localhost
+      run: |
+        cd server
+        python manage.py migrate
+        python manage.py test
+
+    - name: ⚙️ Build Frontend avec Yarn
+      run: |
+        cd client
+        yarn install
+        yarn build
+
+    - name: 🚀 Déploiement (exemple Docker Compose)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        docker-compose -f docker-compose.yml up -d --build
